@@ -20,29 +20,34 @@ const ModalComp = ({ data, setData, dataEdit, isOpen, onClose }) => {
   const [email, setEmail] = React.useState(dataEdit.email || "");
 
   const handleSave = () => {
+    //Verifico se tem alguma informação no name ou no email
     if (!name || !email) return;
 
     if (emailAlreadyExists()) {
+      //Chamo a função e verifico se o email que eu to cadastrando ou editando já existe
       return alert("E-mail já cadastrado!");
     }
 
     if (Object.keys(dataEdit).length) {
+      //Aqui verifico se o que eu estou fazendo é uma edição
       data[dataEdit.index] = { nome, email };
     }
   };
 
-  const newDataArray = !Object.keys(setData)
+  const newDataArray = !Object.keys(setData) //Verifico se não é uma edição (Pego os items que eu tenho cadastrado + o name e o email que eu acabei de inserir, se não eu só passo o data que eu modifiquei, e irá ficar om o objeto editado)
     ? [...(data ? data : []), { nome, email }]
     : [...(data ? data : [])];
 
-  localStorage.setItem("cad_cliente", JSON.stringify(newDataArray));
+  localStorage.setItem("cad_cliente", JSON.stringify(newDataArray)); //Aqui seto na localStorage 
 
   setData(newDataArray);
 
-  onClose();
+  onClose(); //Depois que eu salvar eu fecho o modal
 
   const emailAlreadyExists = () => {
+    //Função que faz a verificação da existencia do email que eu to inserindo (criação ou edição)
     if (dataEdit.email !== email && data?.length) {
+      //Desde que eu não esteja editando o próprio email.
       return data.find((item) => item.email === email);
     }
     return false;

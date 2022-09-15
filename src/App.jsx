@@ -26,8 +26,18 @@ const App = () => {
   });
 
   React.useEffect(() => {
-    
-  });
+    const db_costumer = localStorage.get("cad_cliente")
+      ? JSON.parse(localStorage.get("cad_cliente"))
+      : [];
+
+    setData(db_costumer);
+  }, [setData]);
+
+  const handleRemove = (email) => {
+    const newArray = data.filter((item) => item.email !== email);
+
+    setData(newArray);
+  };
 
   return (
     <Flex
@@ -58,16 +68,40 @@ const App = () => {
             </Thead>
             <Tbody>
               {data.map(({ name, email }, index) => (
-                <Tr
-                  key={index}
-                  cursor="pointer"
-                  _hover={{ bg: "gray.100" }}
-                ></Tr>
+                <Tr key={index} cursor="pointer" _hover={{ bg: "gray.100" }}>
+                  <Td maxW={isMobile ? 5 : 100}>{name}</Td>
+                  <Td maxW={isMobile ? 5 : 100}>{email}</Td>
+                  <Td p={0}>
+                    <EditIcon
+                      fontSize={20}
+                      onClick={() => [
+                        setDataEdit({ name, email, index }),
+                        onOpen(),
+                      ]}
+                    />
+                  </Td>
+                  <Td p={0}>
+                    <DeleteIcon
+                      fontSize={20}
+                      onClick={() => handleRemove(emial)}
+                    />
+                  </Td>
+                </Tr>
               ))}
             </Tbody>
           </Table>
         </Box>
       </Box>
+      {isOpen && (
+        <ModalComp
+          isOpen={isOpen}
+          onClose={onClose}
+          data={data}
+          setData={setData}
+          dataEdit={dataEdit}
+          setDataEdit={setDataEdit}
+        />
+      )}
     </Flex>
   );
 };

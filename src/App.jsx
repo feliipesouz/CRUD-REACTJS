@@ -26,6 +26,7 @@ const App = () => {
   });
 
   React.useEffect(() => {
+    //Carrego os dados do meu localStorage
     const db_costumer = localStorage.get("cad_cliente")
       ? JSON.parse(localStorage.get("cad_cliente"))
       : [];
@@ -34,9 +35,10 @@ const App = () => {
   }, [setData]);
 
   const handleRemove = (email) => {
-    const newArray = data.filter((item) => item.email !== email);
+    //Nossa função para deletarmos um item
+    const newArray = data.filter((item) => item.email !== email); //Verifico se existe algum email diferente desse email que eu estou recebendo no handleRemove.
 
-    setData(newArray);
+    setData(newArray); //Pegando os diferentes
   };
 
   return (
@@ -49,6 +51,7 @@ const App = () => {
     >
       <Box maxW={800} w="100%" h="100vh" py={10} px={2}>
         <Button colorScheme="blue" onClick={() => [setDataEdit({}), onOpen()]}>
+          {/*Ao clicar em novo ele setao dataEdit pra vazio e chama o onOpen, abrindo o nosso modal*/}
           NOVO CADASTRO
         </Button>
 
@@ -83,7 +86,7 @@ const App = () => {
                   <Td p={0}>
                     <DeleteIcon
                       fontSize={20}
-                      onClick={() => handleRemove(emial)}
+                      onClick={() => handleRemove(emial)} //Passando o email do item que eu estou clicando em excluir
                     />
                   </Td>
                 </Tr>
